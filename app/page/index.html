@@ -1,0 +1,14 @@
+{% extends '../base/layout.html' %}
+{% block title %}My Page{% endblock %}
+{% block head %}
+{% parent %}
+    <link rel="stylesheet" href="/style/base.css">
+    <script type="text/javascript" src="/js/index.js"></script>
+{% endblock %}
+{% block content %}
+		{% set foo = { bar: "baz123" } %}
+		{% include "../component/header.html" with foo %}
+    <p>This is just an age.12dqwdq3123</p>
+    <p>This is just an awesome page.12dqwdq3</p>
+    <p>This is just an awesome page.12dqwdq3</p>
+{% endblock %}
