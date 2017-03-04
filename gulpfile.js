@@ -1,5 +1,6 @@
 const CWD = process.cwd(); // "/Users/a888/Desktop/AOB"
 const gulp = require('gulp');
+const querystring = require('querystring');
 
 const clean = require('gulp-clean');
 const runSequence = require('run-sequence');
@@ -15,6 +16,10 @@ const browserify = require('gulp-browserify');
 const uglify = require('gulp-uglify');
 
 const browserSync = require('browser-sync').create();
+
+const replace = require('gulp-replace');
+
+var packageInfo = require('./package.json');
 
 var reload = browserSync.reload;
 
@@ -45,9 +50,15 @@ gulp.task('reload', function() {
 });
 
 gulp.task('html', function() {
+  var versionStr = querystring.stringify({ version: packageInfo.version });
   gulp.src('./app/page/**/*.html')
     .pipe(swig({ defaults: { cache: false } }))
     .pipe(prettify())
+    .pipe(function(data){
+      console.log(data);
+    })
+    .pipe(replace(/(<script[\s\S|]*? src=")([^?"]+?)("[\s\S]*?>[\s\S]*?<\/script>)/gi, '$1$2?' + versionStr + '$3'))
+    .pipe(replace(/(<link[\s\S|]*? href=")([^?"]+?)("[\s\S]*?>)/gi, '$1$2?' + versionStr + '$3'))
     .pipe(gulp.dest('./dist/page'));
 });
 
